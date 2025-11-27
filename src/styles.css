@@ -1,0 +1,158 @@
+:root{
+  --bg:#071428;
+  --ice-1:#e6fbff;
+  --ice-2:#9fe4ff;
+  --muted:rgba(255,255,255,0.65);
+  --accent:#7fd3ff;
+}
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: linear-gradient(180deg,var(--bg) 0%, #042033 60%);
+  color:var(--ice-1);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.container{max-width:1100px;margin:0 auto;padding:2rem}
+.site-header{backdrop-filter: blur(6px);position:sticky;top:0;background:linear-gradient(180deg,rgba(6,20,30,0.6),transparent);border-bottom:1px solid rgba(255,255,255,0.03)}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:0.8rem;align-items:center}
+.logo-ice{font-size:1.6rem}
+.brand-name{margin:0;font-family:Raleway, serif;font-weight:700;letter-spacing:0.6px}
+.brand-tag{font-size:0.8rem;color:var(--muted)}
+.nav a{color:var(--muted);margin-left:1rem;text-decoration:none}
+
+.hero{padding:4rem 0}
+.hero-inner{display:flex;gap:2rem;align-items:center}
+.hero-text{flex:1}
+.hero-text h2{font-family:Raleway, serif;font-size:2rem;margin:0 0 1rem}
+.lead{color:var(--muted);max-width:55ch}
+.hero-ctas{margin-top:1.2rem}
+.btn{display:inline-block;padding:0.6rem 1rem;border-radius:8px;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.06)}
+.btn.primary{background:linear-gradient(90deg,var(--accent),#9fe4ff);color:#022230;font-weight:600}
+.btn.ghost{background:transparent;margin-left:0.6rem}
+.hero-visual{width:380px}
+.iceberg{width:100%;height:auto}
+
+/* Pixel iceberg canvas styling */
+.pixel-iceberg-canvas{display:block;border-radius:10px;background:transparent;image-rendering:pixelated}
+.pixel-iceberg-canvas{box-shadow: 0 18px 50px rgba(5,25,35,0.6)}
+.hero-visual{width:560px}
+
+/* Game controls */
+.game-controls button{background:rgba(255,255,255,0.06);color:var(--ice-1);border:1px solid rgba(255,255,255,0.04);padding:8px 10px;margin-left:6px;border-radius:8px;cursor:pointer}
+.game-controls button.active{background:linear-gradient(90deg,#9fe4ff,#7fd3ff);color:#022230;font-weight:700}
+.gamefield-canvas{z-index:0}
+
+/* ensure main app content sits above game field */
+.app-root > *{position:relative;z-index:100}
+
+
+/* Iceberg float animation */
+.iceberg-shape{transform-origin:center;animation:float 6s ease-in-out infinite, glint 5s linear infinite}
+@keyframes float{
+  0%{transform:translateY(0) rotate(-0.2deg)}
+  50%{transform:translateY(-6px) rotate(0.3deg)}
+  100%{transform:translateY(0) rotate(-0.2deg)}
+}
+@keyframes glint{
+  0%{filter:drop-shadow(0 0 0 rgba(143,211,255,0.0))}
+  50%{filter:drop-shadow(0 8px 16px rgba(143,211,255,0.08))}
+  100%{filter:drop-shadow(0 0 0 rgba(143,211,255,0.0))}
+}
+
+/* Frost overlay inside interactive elements */
+.frost-overlay{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 280ms ease, transform 280ms ease}
+.card, .work{position:relative}
+.card .frost-overlay, .work .frost-overlay{
+  background:radial-gradient(120% 60% at 10% 10%, rgba(255,255,255,0.06), rgba(150,230,255,0.02) 30%, rgba(120,200,255,0.0) 60%);
+  backdrop-filter: blur(6px) saturate(120%);
+  mix-blend-mode: screen;
+}
+.card:hover .frost-overlay, .work:hover .frost-overlay {
+  opacity:1; transform:scale(1.02);
+}
+
+/* subtle frozen rim on hover */
+.card:hover, .work:hover{
+  box-shadow: 0 8px 30px rgba(30,90,120,0.12), inset 0 0 30px rgba(255,255,255,0.02);
+  transform:translateY(-6px);
+}
+
+/* canvas effects z-index already high; add pointer-events none above everything */
+.cryo-effects-canvas{z-index:600}
+
+/* small highlight strokes for hero */
+.hero .iceberg-shape{transition:filter 220ms ease}
+/* hover glow removed to avoid cursor-like bloom on iceberg */
+.hero .iceberg-shape:hover{filter:none}
+
+/* Frost trail performance and subtle overlay */
+@media (prefers-reduced-motion: reduce){
+  .iceberg-shape{animation:none}
+  .cryo-effects-canvas{display:none}
+}
+
+/* subtle moving fog layer via pseudo-background (enhances dynamism) */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:50;pointer-events:none;
+  background: radial-gradient(30% 20% at 10% 10%, rgba(180,230,255,0.03), transparent 20%),
+              radial-gradient(25% 18% at 80% 30%, rgba(180,230,255,0.02), transparent 20%);
+  opacity:0.9;
+  mix-blend-mode: screen;
+  animation: fogMove 28s linear infinite;
+}
+@keyframes fogMove{
+  0%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(-6%,2%,0)}
+  100%{transform:translate3d(0,0,0)}
+}
+
+/* visual cue when freeze hit occurs */
+.freeze-hit{
+  transition:transform 420ms ease, box-shadow 420ms ease;
+  transform:scale(1.012);
+  box-shadow: 0 18px 60px rgba(20,80,110,0.12), inset 0 0 40px rgba(180,240,255,0.02);
+}
+
+/* melting visual — class toggled by Hero; subtle blur, vertical sag and micro drips"
+.iceberg-shape.melting{
+  transform-origin:center;
+  filter: blur(0.6px) saturate(120%);
+  transform: translateY(6px) scaleY(0.995);
+  opacity:0.95;
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1), filter 600ms ease, opacity 600ms ease;
+}
+.iceberg-shape.melting::after{ content:'' }
+
+/* snow canvas styling (very low visual weight) */
+.snow-canvas{z-index:150;mix-blend-mode:screen;opacity:0.92}
+
+
+.services{padding:3rem 0}
+.section-title{font-family:Raleway, serif;margin-bottom:1rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+
+.portfolio{padding:3rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.work{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
+.thumb{height:120px;background:linear-gradient(90deg,#cfeefe,#8fd3ff);}
+.work-body{padding:1rem}
+.muted{color:var(--muted);font-size:0.9rem}
+
+.contact{padding:3rem 0}
+.contact-grid{display:flex;gap:1rem;margin-top:1rem}
+.contact-card{flex:1;background:rgba(255,255,255,0.02);padding:1rem;border-radius:8px}
+
+.site-footer{border-top:1px solid rgba(255,255,255,0.03);padding:1rem 0;margin-top:3rem}
+.footer-inner{display:flex;justify-content:space-between}
+
+@media(max-width:800px){
+  .hero-inner{flex-direction:column}
+  .hero-visual{width:100%}
+  .contact-grid{flex-direction:column}
+}
