@@ -1,23 +1,40 @@
 import React from 'react'
 
 const services = [
-  { title: 'Веб-разработка', desc: 'SPA, SSR, PWAs, высокопроизводительные frontend-решения.' },
-  { title: 'Web3 интеграции', desc: 'Smart contracts, dApps, wallet integration, token flows.' },
-  { title: 'UI/UX и дизайн', desc: 'Пользовательские интерфейсы с акцентом на простоту и стиль.' },
-  { title: 'Консалтинг и архитектура', desc: 'Архитектура приложений, выбор стека и масштабируемость.' }
+  {
+    icon: '▓',
+    title: '[ FRONTEND_DEV ]',
+    desc: '> React/Next.js apps\n> Lightning-fast SPAs\n> 100/100 performance\n> SEO optimized'
+  },
+  {
+    icon: '◆',
+    title: '[ BLOCKCHAIN ]',
+    desc: '> Smart contracts\n> dApp integration\n> Wallet connect\n> Web3 solutions'
+  },
+  {
+    icon: '◢',
+    title: '[ UI_UX_DESIGN ]',
+    desc: '> Pixel-perfect layouts\n> Interactive animations\n> Modern aesthetics\n> User-focused'
+  },
+  {
+    icon: '◣',
+    title: '[ OPTIMIZATION ]',
+    desc: '> Performance audit\n> Code refactoring\n> Speed boost 2-5x\n> Core Web Vitals'
+  }
 ]
 
 export default function Services(){
   return (
     <section id="services" className="services">
       <div className="container">
-        <h3 className="section-title">Услуги</h3>
+        <h2 className="section-title">// LAB_MODULES</h2>
         <div className="cards">
           {services.map(s => (
             <div className="card" key={s.title}>
               <div className="frost-overlay" aria-hidden></div>
-              <h4>{s.title}</h4>
-              <p>{s.desc}</p>
+              <span className="icon" aria-hidden>{s.icon}</span>
+              <h3>{s.title}</h3>
+              <p style={{whiteSpace: 'pre-line'}}>{s.desc}</p>
             </div>
           ))}
         </div>

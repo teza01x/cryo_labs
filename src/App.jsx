@@ -8,15 +8,13 @@ import Footer from './components/Footer'
 import Effects from './components/Effects'
 import Snowfall from './components/Snowfall'
 import GameField from './components/GameField'
-import DevEffectsTester from './components/DevEffectsTester'
+import { FEATURES } from './config'
 
 export default function App() {
   return (
     <div className="app-root">
-      <GameField />
-      <Effects />
-      <DevEffectsTester />
-      <Snowfall />
+      {FEATURES.ENABLE_GAME_FIELD && <GameField />}
+      {FEATURES.ENABLE_SNOWFALL && <Snowfall />}
       <Header />
       <main>
         <Hero />

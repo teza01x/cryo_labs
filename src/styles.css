@@ -1,158 +1,907 @@
-:root{
-  --bg:#071428;
-  --ice-1:#e6fbff;
-  --ice-2:#9fe4ff;
-  --muted:rgba(255,255,255,0.65);
-  --accent:#7fd3ff;
-}
-*{box-sizing:border-box}
-html,body,#root{height:100%}
-body{
-  margin:0;
-  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: linear-gradient(180deg,var(--bg) 0%, #042033 60%);
-  color:var(--ice-1);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-.container{max-width:1100px;margin:0 auto;padding:2rem}
-.site-header{backdrop-filter: blur(6px);position:sticky;top:0;background:linear-gradient(180deg,rgba(6,20,30,0.6),transparent);border-bottom:1px solid rgba(255,255,255,0.03)}
-.header-inner{display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;gap:0.8rem;align-items:center}
-.logo-ice{font-size:1.6rem}
-.brand-name{margin:0;font-family:Raleway, serif;font-weight:700;letter-spacing:0.6px}
-.brand-tag{font-size:0.8rem;color:var(--muted)}
-.nav a{color:var(--muted);margin-left:1rem;text-decoration:none}
+/* ================================================
+   CRYO LABS — PIXEL LABORATORY AESTHETIC
+   Inspired by: Powder Game, Sandspiel, Laboratory UI
+   ================================================ */
 
-.hero{padding:4rem 0}
-.hero-inner{display:flex;gap:2rem;align-items:center}
-.hero-text{flex:1}
-.hero-text h2{font-family:Raleway, serif;font-size:2rem;margin:0 0 1rem}
-.lead{color:var(--muted);max-width:55ch}
-.hero-ctas{margin-top:1.2rem}
-.btn{display:inline-block;padding:0.6rem 1rem;border-radius:8px;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.06)}
-.btn.primary{background:linear-gradient(90deg,var(--accent),#9fe4ff);color:#022230;font-weight:600}
-.btn.ghost{background:transparent;margin-left:0.6rem}
-.hero-visual{width:380px}
-.iceberg{width:100%;height:auto}
+/* CSS Variables */
+:root {
+  /* Ice Laboratory Palette */
+  --lab-bg: #0d1117;
+  --lab-surface: #161b22;
+  --lab-border: #30363d;
+  --ice-primary: #58a6ff;
+  --ice-light: #79c0ff;
+  --ice-glow: #1f6feb;
+  --ice-crystal: #8ed9ff;
+  --frost: #c9d1d9;
+  --dark-ice: #0969da;
 
-/* Pixel iceberg canvas styling */
-.pixel-iceberg-canvas{display:block;border-radius:10px;background:transparent;image-rendering:pixelated}
-.pixel-iceberg-canvas{box-shadow: 0 18px 50px rgba(5,25,35,0.6)}
-.hero-visual{width:560px}
+  /* Pixel Grid System */
+  --pixel: 8px;
+  --grid-1: calc(var(--pixel) * 1);
+  --grid-2: calc(var(--pixel) * 2);
+  --grid-3: calc(var(--pixel) * 3);
+  --grid-4: calc(var(--pixel) * 4);
+  --grid-6: calc(var(--pixel) * 6);
+  --grid-8: calc(var(--pixel) * 8);
+  --grid-12: calc(var(--pixel) * 12);
+}
+
+/* ================================================
+   RESET & BASE
+   ================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  background: var(--lab-bg);
+  color: var(--frost);
+  line-height: 1.5;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  image-rendering: pixelated;
+  overflow-x: hidden;
+}
+
+/* Pixel-perfect rendering */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent var(--pixel), rgba(88, 166, 255, 0.02) var(--pixel), rgba(88, 166, 255, 0.02) calc(var(--pixel) * 2));
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: overlay;
+}
+
+/* ================================================
+   TYPOGRAPHY - Pixel Perfect
+   ================================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  image-rendering: pixelated;
+}
+
+h1 {
+  font-size: 64px;
+  line-height: 64px;
+}
+h2 {
+  font-size: 32px;
+  line-height: 32px;
+}
+h3 {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+/* Pixel text shadow */
+.pixel-text {
+  position: relative;
+  display: inline-block;
+}
+
+.pixel-text::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  color: var(--ice-glow);
+  z-index: -1;
+}
+
+/* ================================================
+   UTILITY CLASSES
+   ================================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--grid-3);
+}
+
+.pixel-box {
+  background: var(--lab-surface);
+  border: 2px solid var(--lab-border);
+  box-shadow:
+    0 0 0 1px var(--lab-bg),
+    0 0 16px rgba(88, 166, 255, 0.1);
+  image-rendering: pixelated;
+}
+
+.ice-glow {
+  box-shadow:
+    0 0 8px var(--ice-glow),
+    0 0 16px var(--ice-primary),
+    inset 0 0 8px rgba(88, 166, 255, 0.2);
+}
+
+/* ================================================
+   HEADER - Laboratory Terminal
+   ================================================ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--lab-surface);
+  border-bottom: 2px solid var(--lab-border);
+  image-rendering: pixelated;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--grid-2);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--grid-2);
+  text-decoration: none;
+  color: var(--ice-light);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.logo-ice {
+  width: 32px;
+  height: 32px;
+  background: var(--ice-primary);
+  box-shadow:
+    inset -2px -2px 0 var(--dark-ice),
+    inset 2px 2px 0 var(--ice-light),
+    0 0 16px var(--ice-glow);
+  animation: ice-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ice-pulse {
+  0%, 100% {
+    box-shadow:
+      inset -2px -2px 0 var(--dark-ice),
+      inset 2px 2px 0 var(--ice-light),
+      0 0 16px var(--ice-glow);
+  }
+  50% {
+    box-shadow:
+      inset -2px -2px 0 var(--dark-ice),
+      inset 2px 2px 0 var(--ice-light),
+      0 0 24px var(--ice-glow);
+  }
+}
+
+.brand-tag {
+  font-size: 10px;
+  color: var(--ice-crystal);
+  text-transform: none;
+  letter-spacing: 1px;
+}
+
+.nav {
+  display: flex;
+  gap: var(--grid-3);
+}
+
+.nav a {
+  color: var(--frost);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: var(--grid-1) var(--grid-2);
+  border: 2px solid transparent;
+  transition: all 0.1s steps(2);
+  position: relative;
+}
+
+.nav a:hover {
+  color: var(--ice-light);
+  border: 2px solid var(--ice-primary);
+  background: rgba(88, 166, 255, 0.1);
+  box-shadow: 0 0 8px var(--ice-glow);
+}
+
+/* ================================================
+   HERO - Laboratory Workstation
+   ================================================ */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding-top: 80px;
+  padding-bottom: var(--grid-8);
+  position: relative;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent calc(var(--pixel) * 16),
+      rgba(88, 166, 255, 0.02) calc(var(--pixel) * 16),
+      rgba(88, 166, 255, 0.02) calc(var(--pixel) * 17)
+    );
+}
+
+.hero-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.hero-text h1 {
+  color: var(--ice-light);
+  margin-bottom: var(--grid-3);
+  text-shadow:
+    0 0 10px rgba(88, 166, 255, 0.5),
+    0 0 20px rgba(88, 166, 255, 0.3),
+    0 0 30px rgba(88, 166, 255, 0.2),
+    2px 2px 0 var(--ice-glow),
+    4px 4px 0 var(--dark-ice);
+  animation: neon-flicker 4s infinite;
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 10px rgba(88, 166, 255, 0.5),
+      0 0 20px rgba(88, 166, 255, 0.3),
+      0 0 30px rgba(88, 166, 255, 0.2),
+      2px 2px 0 var(--ice-glow),
+      4px 4px 0 var(--dark-ice);
+  }
+  20%, 24%, 55% {
+    text-shadow:
+      0 0 5px rgba(88, 166, 255, 0.3),
+      2px 2px 0 var(--ice-glow),
+      4px 4px 0 var(--dark-ice);
+  }
+}
+
+.hero-text .lead {
+  font-size: 14px;
+  color: var(--frost);
+  line-height: 24px;
+  max-width: 50ch;
+  opacity: 0.8;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: var(--grid-2);
+  margin-top: var(--grid-4);
+}
+
+/* ================================================
+   BUTTONS - Laboratory Controls
+   ================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--grid-2) var(--grid-4);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 2px solid var(--lab-border);
+  background: var(--lab-surface);
+  color: var(--frost);
+  cursor: pointer;
+  transition: all 0.1s steps(2);
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 2px solid transparent;
+  transition: all 0.1s steps(2);
+}
+
+.btn.primary {
+  background: var(--ice-primary);
+  border-color: var(--ice-light);
+  color: var(--lab-bg);
+  box-shadow:
+    inset -2px -2px 0 var(--dark-ice),
+    inset 2px 2px 0 var(--ice-light),
+    0 4px 0 var(--dark-ice);
+}
+
+.btn.primary:hover {
+  transform: translate(0, 2px);
+  box-shadow:
+    inset -2px -2px 0 var(--dark-ice),
+    inset 2px 2px 0 var(--ice-light),
+    0 2px 0 var(--dark-ice);
+}
+
+.btn.primary:active {
+  transform: translate(0, 4px);
+  box-shadow:
+    inset -2px -2px 0 var(--dark-ice),
+    inset 2px 2px 0 var(--ice-light);
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: var(--ice-primary);
+  color: var(--ice-light);
+}
+
+.btn.ghost:hover {
+  background: rgba(88, 166, 255, 0.1);
+  box-shadow: 0 0 16px var(--ice-glow);
+}
+
+/* ================================================
+   PIXEL ICEBERG CONTAINER
+   ================================================ */
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: var(--grid-3);
+}
+
+.pixel-iceberg-canvas {
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  border: 2px solid var(--ice-primary);
+  background: rgba(88, 166, 255, 0.05);
+  box-shadow:
+    0 0 16px var(--ice-glow),
+    inset 0 0 32px rgba(88, 166, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.1s steps(2);
+}
+
+.pixel-iceberg-canvas:hover {
+  box-shadow:
+    0 0 24px var(--ice-glow),
+    inset 0 0 32px rgba(88, 166, 255, 0.2);
+  border-color: var(--ice-light);
+}
+
+/* ================================================
+   SERVICES - Laboratory Stations
+   ================================================ */
+.services {
+  padding: var(--grid-12) 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      var(--lab-bg),
+      var(--lab-bg) calc(var(--pixel) * 16),
+      var(--lab-surface) calc(var(--pixel) * 16),
+      var(--lab-surface) calc(var(--pixel) * 17)
+    );
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: var(--grid-6);
+  text-align: center;
+  color: var(--ice-light);
+  text-shadow: 2px 2px 0 var(--ice-glow);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  background: var(--ice-primary);
+  margin: var(--grid-2) auto 0;
+  box-shadow: 0 0 8px var(--ice-glow);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--grid-3);
+}
+
+.card {
+  background: var(--lab-surface);
+  border: 2px solid var(--lab-border);
+  padding: var(--grid-4);
+  position: relative;
+  transition: all 0.1s steps(2);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Pixel scan line effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: var(--ice-primary);
+  box-shadow: 0 0 8px var(--ice-glow);
+  transition: left 0.3s steps(8);
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.card:hover {
+  border-color: var(--ice-primary);
+  box-shadow:
+    0 0 16px var(--ice-glow),
+    inset 0 0 16px rgba(88, 166, 255, 0.1);
+  transform: translate(-4px, -4px);
+}
+
+.card:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border: 2px solid var(--ice-primary);
+  pointer-events: none;
+}
+
+.card .icon {
+  font-size: 32px;
+  margin-bottom: var(--grid-2);
+  display: block;
+  filter: drop-shadow(0 0 8px var(--ice-glow));
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: var(--grid-2);
+  color: var(--ice-crystal);
+  text-transform: uppercase;
+}
+
+.card p {
+  font-size: 12px;
+  color: var(--frost);
+  line-height: 20px;
+  opacity: 0.8;
+}
+
+/* ================================================
+   PORTFOLIO - Experiment Results
+   ================================================ */
+.portfolio {
+  padding: var(--grid-12) 0;
+  background: var(--lab-bg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--grid-3);
+}
+
+.work {
+  background: var(--lab-surface);
+  border: 2px solid var(--lab-border);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.1s steps(2);
+}
+
+.work:hover {
+  border-color: var(--ice-primary);
+  box-shadow: 0 0 24px var(--ice-glow);
+  transform: translate(-4px, -4px);
+}
+
+.work:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border: 2px solid var(--ice-primary);
+  pointer-events: none;
+}
+
+.thumb {
+  height: 160px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--ice-glow),
+      var(--ice-glow) 2px,
+      var(--ice-primary) 2px,
+      var(--ice-primary) 4px
+    );
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--lab-border);
+}
+
+.thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(13, 17, 23, 0.3) 2px,
+      rgba(13, 17, 23, 0.3) 4px
+    );
+  opacity: 0;
+  transition: opacity 0.2s steps(4);
+}
+
+.work:hover .thumb::after {
+  opacity: 1;
+}
+
+.work-body {
+  padding: var(--grid-3);
+}
+
+.work-body h3 {
+  font-size: 16px;
+  margin-bottom: var(--grid-1);
+  color: var(--ice-light);
+  text-transform: uppercase;
+}
+
+.work-body .muted {
+  color: var(--ice-crystal);
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-bottom: var(--grid-2);
+  display: block;
+  letter-spacing: 1px;
+}
+
+.work-body p {
+  font-size: 12px;
+  color: var(--frost);
+  line-height: 18px;
+  opacity: 0.8;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--grid-1);
+  margin-top: var(--grid-2);
+}
+
+.tech-tags span {
+  padding: 4px 8px;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid var(--ice-primary);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ice-crystal);
+}
+
+/* ================================================
+   CONTACT - Laboratory Terminal
+   ================================================ */
+.contact {
+  padding: var(--grid-12) 0;
+  background: var(--lab-surface);
+  border-top: 2px solid var(--lab-border);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-4);
+  margin-top: var(--grid-4);
+}
+
+.contact-card {
+  background: var(--lab-bg);
+  border: 2px solid var(--lab-border);
+  padding: var(--grid-4);
+}
+
+.contact-card h3 {
+  font-size: 16px;
+  margin-bottom: var(--grid-3);
+  color: var(--ice-crystal);
+  text-transform: uppercase;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-3);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-1);
+}
+
+.form-group label {
+  font-size: 10px;
+  color: var(--ice-crystal);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-group input,
+.form-group textarea {
+  background: var(--lab-surface);
+  border: 2px solid var(--lab-border);
+  color: var(--frost);
+  padding: var(--grid-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  transition: all 0.1s steps(2);
+  image-rendering: pixelated;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--ice-primary);
+  box-shadow:
+    0 0 16px var(--ice-glow),
+    inset 0 0 8px rgba(88, 166, 255, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.form-group.error input,
+.form-group.error textarea {
+  border-color: #ff4444;
+  box-shadow: 0 0 8px rgba(255, 68, 68, 0.5);
+}
+
+.form-group .error-message {
+  color: #ff4444;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+/* ================================================
+   FOOTER
+   ================================================ */
+.site-footer {
+  border-top: 2px solid var(--lab-border);
+  padding: var(--grid-4) 0;
+  background: var(--lab-bg);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--grid-3);
+}
+
+.footer-inner p {
+  color: var(--frost);
+  font-size: 10px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--grid-3);
+}
+
+.footer-links a {
+  color: var(--ice-crystal);
+  text-decoration: none;
+  font-size: 10px;
+  text-transform: uppercase;
+  transition: all 0.1s steps(2);
+}
+
+.footer-links a:hover {
+  color: var(--ice-light);
+}
+
+/* ================================================
+   CANVAS LAYERS
+   ================================================ */
+.gamefield-canvas,
+.cryo-effects-canvas,
+.snow-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.gamefield-canvas {
+  z-index: 1;
+  opacity: 0.2;
+}
+
+.cryo-effects-canvas {
+  z-index: 500;
+  mix-blend-mode: screen;
+}
+
+.snow-canvas {
+  z-index: 100;
+  mix-blend-mode: screen;
+  opacity: 0.3;
+}
 
 /* Game controls */
-.game-controls button{background:rgba(255,255,255,0.06);color:var(--ice-1);border:1px solid rgba(255,255,255,0.04);padding:8px 10px;margin-left:6px;border-radius:8px;cursor:pointer}
-.game-controls button.active{background:linear-gradient(90deg,#9fe4ff,#7fd3ff);color:#022230;font-weight:700}
-.gamefield-canvas{z-index:0}
-
-/* ensure main app content sits above game field */
-.app-root > *{position:relative;z-index:100}
-
-
-/* Iceberg float animation */
-.iceberg-shape{transform-origin:center;animation:float 6s ease-in-out infinite, glint 5s linear infinite}
-@keyframes float{
-  0%{transform:translateY(0) rotate(-0.2deg)}
-  50%{transform:translateY(-6px) rotate(0.3deg)}
-  100%{transform:translateY(0) rotate(-0.2deg)}
-}
-@keyframes glint{
-  0%{filter:drop-shadow(0 0 0 rgba(143,211,255,0.0))}
-  50%{filter:drop-shadow(0 8px 16px rgba(143,211,255,0.08))}
-  100%{filter:drop-shadow(0 0 0 rgba(143,211,255,0.0))}
+.game-controls {
+  position: fixed;
+  top: 72px;
+  right: var(--grid-3);
+  z-index: 1001;
+  display: flex;
+  gap: var(--grid-1);
 }
 
-/* Frost overlay inside interactive elements */
-.frost-overlay{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 280ms ease, transform 280ms ease}
-.card, .work{position:relative}
-.card .frost-overlay, .work .frost-overlay{
-  background:radial-gradient(120% 60% at 10% 10%, rgba(255,255,255,0.06), rgba(150,230,255,0.02) 30%, rgba(120,200,255,0.0) 60%);
-  backdrop-filter: blur(6px) saturate(120%);
-  mix-blend-mode: screen;
-}
-.card:hover .frost-overlay, .work:hover .frost-overlay {
-  opacity:1; transform:scale(1.02);
-}
-
-/* subtle frozen rim on hover */
-.card:hover, .work:hover{
-  box-shadow: 0 8px 30px rgba(30,90,120,0.12), inset 0 0 30px rgba(255,255,255,0.02);
-  transform:translateY(-6px);
+.game-controls button {
+  background: var(--lab-surface);
+  color: var(--frost);
+  border: 2px solid var(--lab-border);
+  padding: var(--grid-2);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  transition: all 0.1s steps(2);
+  image-rendering: pixelated;
 }
 
-/* canvas effects z-index already high; add pointer-events none above everything */
-.cryo-effects-canvas{z-index:600}
-
-/* small highlight strokes for hero */
-.hero .iceberg-shape{transition:filter 220ms ease}
-/* hover glow removed to avoid cursor-like bloom on iceberg */
-.hero .iceberg-shape:hover{filter:none}
-
-/* Frost trail performance and subtle overlay */
-@media (prefers-reduced-motion: reduce){
-  .iceberg-shape{animation:none}
-  .cryo-effects-canvas{display:none}
+.game-controls button:hover {
+  border-color: var(--ice-primary);
+  box-shadow: 0 0 8px var(--ice-glow);
 }
 
-/* subtle moving fog layer via pseudo-background (enhances dynamism) */
-body::before{
-  content:'';
-  position:fixed;inset:0;z-index:50;pointer-events:none;
-  background: radial-gradient(30% 20% at 10% 10%, rgba(180,230,255,0.03), transparent 20%),
-              radial-gradient(25% 18% at 80% 30%, rgba(180,230,255,0.02), transparent 20%);
-  opacity:0.9;
-  mix-blend-mode: screen;
-  animation: fogMove 28s linear infinite;
-}
-@keyframes fogMove{
-  0%{transform:translate3d(0,0,0)}
-  50%{transform:translate3d(-6%,2%,0)}
-  100%{transform:translate3d(0,0,0)}
+.game-controls button.active {
+  background: var(--ice-primary);
+  color: var(--lab-bg);
+  border-color: var(--ice-light);
 }
 
-/* visual cue when freeze hit occurs */
-.freeze-hit{
-  transition:transform 420ms ease, box-shadow 420ms ease;
-  transform:scale(1.012);
-  box-shadow: 0 18px 60px rgba(20,80,110,0.12), inset 0 0 40px rgba(180,240,255,0.02);
+/* App root z-index */
+.app-root > * {
+  position: relative;
+  z-index: 10;
 }
 
-/* melting visual — class toggled by Hero; subtle blur, vertical sag and micro drips"
-.iceberg-shape.melting{
-  transform-origin:center;
-  filter: blur(0.6px) saturate(120%);
-  transform: translateY(6px) scaleY(0.995);
-  opacity:0.95;
-  transition: transform 900ms cubic-bezier(.2,.9,.2,1), filter 600ms ease, opacity 600ms ease;
+/* ================================================
+   RESPONSIVE DESIGN
+   ================================================ */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--grid-6);
+  }
+
+  h1 {
+    font-size: 48px;
+    line-height: 48px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    display: none;
+  }
 }
-.iceberg-shape.melting::after{ content:'' }
 
-/* snow canvas styling (very low visual weight) */
-.snow-canvas{z-index:150;mix-blend-mode:screen;opacity:0.92}
+@media (max-width: 600px) {
+  .cards,
+  .grid {
+    grid-template-columns: 1fr;
+  }
 
+  h1 {
+    font-size: 32px;
+    line-height: 32px;
+  }
+  h2 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+}
 
-.services{padding:3rem 0}
-.section-title{font-family:Raleway, serif;margin-bottom:1rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
-.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:1rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+/* ================================================
+   ACCESSIBILITY
+   ================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 
-.portfolio{padding:3rem 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
-.work{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)}
-.thumb{height:120px;background:linear-gradient(90deg,#cfeefe,#8fd3ff);}
-.work-body{padding:1rem}
-.muted{color:var(--muted);font-size:0.9rem}
+  .cryo-effects-canvas,
+  .snow-canvas {
+    display: none !important;
+  }
+}
 
-.contact{padding:3rem 0}
-.contact-grid{display:flex;gap:1rem;margin-top:1rem}
-.contact-card{flex:1;background:rgba(255,255,255,0.02);padding:1rem;border-radius:8px}
+*:focus-visible {
+  outline: 2px solid var(--ice-primary);
+  outline-offset: 2px;
+}
 
-.site-footer{border-top:1px solid rgba(255,255,255,0.03);padding:1rem 0;margin-top:3rem}
-.footer-inner{display:flex;justify-content:space-between}
+/* Frost overlay effect */
+.frost-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(88, 166, 255, 0.05) 4px,
+      rgba(88, 166, 255, 0.05) 8px
+    );
+  opacity: 0;
+  transition: opacity 0.2s steps(4);
+  pointer-events: none;
+}
 
-@media(max-width:800px){
-  .hero-inner{flex-direction:column}
-  .hero-visual{width:100%}
-  .contact-grid{flex-direction:column}
+.card:hover .frost-overlay,
+.work:hover .frost-overlay {
+  opacity: 1;
 }

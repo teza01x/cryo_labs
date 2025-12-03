@@ -1,7 +1,12 @@
 import React, { useRef, useEffect } from 'react'
+import { PERFORMANCE, FEATURES } from '../config'
 
 // Layered, flow-field driven vapor effect
 export default function Effects(){
+  // Check for reduced motion preference
+  if (FEATURES.RESPECT_REDUCED_MOTION && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return null
+  }
   const bgRef = useRef(null)
   const fgRef = useRef(null)
   const rafRef = useRef(null)
@@ -62,6 +67,12 @@ export default function Effects(){
     }
 
     function spawn(x,y,opts = {}){
+      // Enforce particle limit
+      if (particles.length >= PERFORMANCE.MAX_PARTICLES) {
+        // Remove oldest particles first
+        particles.splice(0, Math.floor(PERFORMANCE.MAX_PARTICLES * 0.1))
+      }
+
       const life = opts.life || (80 + Math.random()*80)
       const size = opts.size || (22 + Math.random()*36)
       const type = opts.type || 'steam'
@@ -97,7 +108,7 @@ export default function Effects(){
       // spawn a dense burst tuned to the mode (ice -> steam, fire -> embers+smoke)
       const mode = d && d.mode ? d.mode : 'ice'
       if(mode === 'fire'){
-        for(let i=0;i<14;i++){
+        for(let i=0;i<PERFORMANCE.SMOKE_PARTICLES_PER_BURST;i++){
           const sx = cx + (Math.random()-0.5)*90
           const sy = cy + (Math.random()-0.5)*50
           // embers: small, short-lived, warm color
@@ -110,8 +121,9 @@ export default function Effects(){
           spawn(sx, sy, { type: 'smoke', size: 20 + Math.random()*40, life: 80 + Math.random()*80 })
         }
       } else {
-        // steam burst
-        for(let i=0;i<12;i++){
+        // steam burst (reduced from 12 to configurable amount)
+        const steamCount = Math.floor(PERFORMANCE.STEAM_PARTICLES_PER_BURST * 0.7)
+        for(let i=0;i<steamCount;i++){
           const sx = cx + (Math.random()-0.5)*80
           const sy = cy + (Math.random()-0.5)*40
           spawn(sx, sy, { type: 'steam', size: 18 + Math.random()*36, life: 60 + Math.random()*100 })
@@ -142,8 +154,9 @@ export default function Effects(){
     }
 
     function onEnter(){
-      // burst
-      for(let i=0;i<40;i++){
+      // burst (reduced from 40 to 20 for better performance)
+      const burstCount = 20
+      for(let i=0;i<burstCount;i++){
         spawn(pointer.x + (Math.random()-0.5)*80, pointer.y + (Math.random()-0.5)*60, { size: 30 + Math.random()*60, life: 80 + Math.random()*120 })
       }
     }

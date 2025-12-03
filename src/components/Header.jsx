@@ -4,17 +4,17 @@ export default function Header(){
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <div className="brand">
-          <div className="logo-ice" aria-hidden>❄️</div>
+        <a href="#" className="brand">
+          <div className="logo-ice" aria-hidden="true"></div>
           <div>
-            <h1 className="brand-name">Cryo Labs</h1>
-            <div className="brand-tag">Web2 & Web3 development agency</div>
+            <div className="brand-name">CRYO LABS</div>
+            <div className="brand-tag">&lt;/&gt; ICE.LAB.v2.0</div>
           </div>
-        </div>
+        </a>
         <nav className="nav">
-          <a href="#services">Услуги</a>
-          <a href="#portfolio">Портфолио</a>
-          <a href="#contact">Контакты</a>
+          <a href="#services">[MODULES]</a>
+          <a href="#portfolio">[EXPERIMENTS]</a>
+          <a href="#contact">[CONTACT]</a>
         </nav>
       </div>
     </header>

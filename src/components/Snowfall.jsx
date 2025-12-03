@@ -1,6 +1,11 @@
 import React, { useRef, useEffect } from 'react'
+import { PERFORMANCE, FEATURES } from '../config'
 
 export default function Snowfall(){
+  // Check for reduced motion preference
+  if (FEATURES.RESPECT_REDUCED_MOTION && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return null
+  }
   const canvasRef = useRef(null)
   const rafRef = useRef(null)
 
@@ -14,7 +19,11 @@ export default function Snowfall(){
     window.addEventListener('resize', onResize)
 
     const flakes = []
-    const F = Math.max(40, Math.floor((w*h) / 90000))
+    // Use config values for min/max snowflakes
+    const F = Math.min(
+      PERFORMANCE.SNOWFLAKE_COUNT.MAX,
+      Math.max(PERFORMANCE.SNOWFLAKE_COUNT.MIN, Math.floor((w*h) / 90000))
+    )
     for(let i=0;i<F;i++){
       flakes.push({
         x: Math.random()*w,
@@ -28,7 +37,7 @@ export default function Snowfall(){
 
     function draw(){
       ctx.clearRect(0,0,w,h)
-      ctx.fillStyle = 'rgba(255,255,255,0.75)'
+      ctx.fillStyle = '#79c0ff'
       for(const f of flakes){
         f.x += f.vx + Math.sin(f.sway) * 0.3
         f.y += f.vy
@@ -36,7 +45,7 @@ export default function Snowfall(){
         if(f.y > h + 10){ f.y = -10; f.x = Math.random()*w }
         if(f.x < -10) f.x = w + 10
         if(f.x > w + 10) f.x = -10
-        ctx.globalAlpha = 0.08 + (f.r/4)*0.08
+        ctx.globalAlpha = 0.3 + (f.r/4)*0.2
         ctx.beginPath()
         ctx.arc(f.x, f.y, f.r, 0, Math.PI*2)
         ctx.fill()

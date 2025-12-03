@@ -1,25 +1,45 @@
 import React from 'react'
 
-const examples = [
-  { title: 'Project Aurora', type: 'Web3 marketplace', desc: 'Маркетплейс NFT с быстрой синхронизацией и кастомными индексами.' },
-  { title: 'FrostApp', type: 'Web2 SaaS', desc: 'Панель управления для B2B клиентов с аналитикой и уведомлениями.' },
-  { title: 'Glacier UI Kit', type: 'Design System', desc: 'Компонентная библиотека с поддержкой тем и accessibility.' }
+const projects = [
+  {
+    title: 'AURORA_PROTOCOL',
+    type: '[WEB3] • [DEFI]',
+    desc: '> Decentralized platform\n> Smart contract integration\n> Wallet connection system',
+    tech: ['REACT', 'ETHERS.JS', 'WAGMI']
+  },
+  {
+    title: 'FROST_DASHBOARD',
+    type: '[ANALYTICS] • [B2B]',
+    desc: '> Real-time data viz\n> Optimized rendering\n> Enterprise SaaS platform',
+    tech: ['NEXT.JS', 'REACT-QUERY', 'D3.JS']
+  },
+  {
+    title: 'PIXEL_SANDBOX',
+    type: '[INTERACTIVE] • [CANVAS]',
+    desc: '> Particle physics sim\n> Procedural generation\n> WebGL acceleration',
+    tech: ['CANVAS', 'WEBGL', 'TYPESCRIPT']
+  }
 ]
 
 export default function Portfolio(){
   return (
     <section id="portfolio" className="portfolio">
       <div className="container">
-        <h3 className="section-title">Портфолио</h3>
+        <h2 className="section-title">// EXPERIMENT_RESULTS</h2>
         <div className="grid">
-          {examples.map(e => (
-            <article className="work" key={e.title}>
+          {projects.map(p => (
+            <article className="work" key={p.title}>
               <div className="frost-overlay" aria-hidden></div>
               <div className="thumb" aria-hidden></div>
               <div className="work-body">
-                <h4>{e.title}</h4>
-                <div className="muted">{e.type}</div>
-                <p>{e.desc}</p>
+                <h3>{p.title}</h3>
+                <div className="muted">{p.type}</div>
+                <p style={{whiteSpace: 'pre-line'}}>{p.desc}</p>
+                <div className="tech-tags">
+                  {p.tech.map(t => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
               </div>
             </article>
           ))}
