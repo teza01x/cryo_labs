@@ -4,3 +4,5 @@ dist/
 /.pnp
 /.pnp.js
 *.log
+.claude/
+.claude/settings.local.json

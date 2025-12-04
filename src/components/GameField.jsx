@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 export default function GameField(){
   const canvasRef = useRef(null)
   const rafRef = useRef(null)
   const simThrottleRef = useRef(0)
   const pointerRef = useRef({down:false,x:0,y:0})
-  const [mode, setMode] = useState('ice') // 'ice' or 'fire'
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -57,19 +56,10 @@ export default function GameField(){
           if(gx<0||gy<0||gx>=COLS||gy>=ROWS) continue
           if(dx*dx+dy*dy > r*r) continue
           const i = idx(gx,gy)
-          if(mode === 'ice'){
-            // freeze water into ice
-            if(grid[i] === 1){ grid[i] = 2 }
-          } else {
-            // fire melts ice into water
-            if(grid[i] === 2){ grid[i] = 1 }
-          }
+          // freeze water into ice
+          if(grid[i] === 1){ grid[i] = 2 }
         }
       }
-      // dispatch a burst event so other systems (Effects) can react visually
-      try{
-        window.dispatchEvent(new CustomEvent('cryo:melt-burst', { detail: { x: px, y: py, mode } }))
-      }catch(e){ /* ignore */ }
     }
 
     function onPointerDown(e){
@@ -158,16 +148,6 @@ export default function GameField(){
         }
       }
 
-      // pointer preview / brush outline
-      if(pointerRef.current){
-        const px = pointerRef.current.x; const py = pointerRef.current.y
-        ctx.strokeStyle = mode === 'ice' ? 'rgba(170,230,255,0.6)' : 'rgba(255,180,120,0.6)'
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.arc(px, py, cell*2, 0, Math.PI*2)
-        ctx.stroke()
-      }
-
       rafRef.current = requestAnimationFrame(draw)
     }
 
@@ -179,19 +159,10 @@ export default function GameField(){
       canvas.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('pointerup', onPointerUp)
       canvas.removeEventListener('pointermove', onPointerMove)
-      // cleanup
     }
-  }, [mode])
+  }, [])
 
-  // controls overlay is rendered in App; we expose mode setter via props? keep local
   return (
-    <div>
-      <canvas ref={canvasRef} className="gamefield-canvas" style={{position:'fixed',left:0,top:0,width:'100%',height:'100%',zIndex:0}} />
-      <div className="game-controls" style={{position:'fixed',right:18,top:18,zIndex:1200}}>
-        <button onClick={() => setMode('ice')} className={mode==='ice'? 'active':''}>Ice</button>
-        <button onClick={() => setMode('fire')} className={mode==='fire'? 'active':''}>Fire</button>
-        <button onClick={() => { window.location.reload() }}>Reset</button>
-      </div>
-    </div>
+    <canvas ref={canvasRef} className="gamefield-canvas" style={{position:'fixed',left:0,top:0,width:'100%',height:'100%',zIndex:0}} />
   )
 }

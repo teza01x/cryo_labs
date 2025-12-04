@@ -10,21 +10,25 @@ export default function DNAHelix() {
 
     const ctx = canvas.getContext('2d')
     const PIXEL = 8
-    const WIDTH = 420
-    const HEIGHT = 520
+
+    // Adaptive size based on screen width
+    const isMobile = window.innerWidth < 768
+    const WIDTH = isMobile ? 300 : 420
+    const HEIGHT = isMobile ? 400 : 520
 
     canvas.width = WIDTH
     canvas.height = HEIGHT
 
     let rotation = 0
     let hologramFlicker = 0
-    const helixHeight = 48 // number of levels
-    const radius = 19 // radius in pixels
-    const spacing = 11 // vertical spacing between levels
+    const helixHeight = isMobile ? 40 : 48
+    const radius = isMobile ? 15 : 19
+    const spacing = isMobile ? 10 : 11
 
-    // Energy particles
+    // Energy particles - less on mobile for performance
     const particles = []
-    for (let i = 0; i < 20; i++) {
+    const particleCount = isMobile ? 12 : 20
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         angle: Math.random() * Math.PI * 2,
         level: Math.random() * helixHeight,
@@ -209,7 +213,7 @@ export default function DNAHelix() {
       className="dna-helix-canvas"
       style={{
         width: '100%',
-        maxWidth: '420px',
+        maxWidth: window.innerWidth < 768 ? '300px' : '420px',
         height: 'auto',
         imageRendering: 'pixelated',
         cursor: 'pointer',

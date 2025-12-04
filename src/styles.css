@@ -48,6 +48,7 @@ html, body, #root {
 
 body {
   font-family: 'JetBrains Mono', 'Courier New', monospace;
+  touch-action: pan-y pinch-zoom;
   background: var(--lab-bg);
   color: var(--frost);
   line-height: 1.5;
@@ -781,41 +782,6 @@ h3 {
   opacity: 0.3;
 }
 
-/* Game controls */
-.game-controls {
-  position: fixed;
-  top: 72px;
-  right: var(--grid-3);
-  z-index: 1001;
-  display: flex;
-  gap: var(--grid-1);
-}
-
-.game-controls button {
-  background: var(--lab-surface);
-  color: var(--frost);
-  border: 2px solid var(--lab-border);
-  padding: var(--grid-2);
-  cursor: pointer;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-  text-transform: uppercase;
-  transition: all 0.1s steps(2);
-  image-rendering: pixelated;
-}
-
-.game-controls button:hover {
-  border-color: var(--ice-primary);
-  box-shadow: 0 0 8px var(--ice-glow);
-}
-
-.game-controls button.active {
-  background: var(--ice-primary);
-  color: var(--lab-bg);
-  border-color: var(--ice-light);
-}
-
 /* App root z-index */
 .app-root > * {
   position: relative;
@@ -827,8 +793,17 @@ h3 {
    ================================================ */
 @media (max-width: 900px) {
   .hero-inner {
-    grid-template-columns: 1fr;
-    gap: var(--grid-6);
+    flex-direction: column;
+    gap: var(--grid-4);
+    padding: var(--grid-3);
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-ctas {
+    justify-content: center;
   }
 
   h1 {
@@ -846,6 +821,10 @@ h3 {
 }
 
 @media (max-width: 600px) {
+  .hero-inner {
+    gap: var(--grid-3);
+  }
+
   .cards,
   .grid {
     grid-template-columns: 1fr;
@@ -858,6 +837,49 @@ h3 {
   h2 {
     font-size: 24px;
     line-height: 24px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-bottom: var(--grid-4);
+    word-break: break-word;
+    padding: 0 var(--grid-2);
+  }
+
+  .hero-text .lead {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .btn {
+    font-size: 10px;
+    padding: var(--grid-1) var(--grid-3);
+  }
+
+  .brand {
+    font-size: 14px;
+    gap: var(--grid-1);
+  }
+
+  .brand-name {
+    font-size: 14px;
+  }
+
+  .brand-tag {
+    font-size: 8px;
+  }
+
+  .logo-ice {
+    width: 24px;
+    height: 24px;
+  }
+
+  .header {
+    padding: var(--grid-2) var(--grid-3);
+  }
+
+  .container {
+    padding: 0 var(--grid-2);
   }
 }
 
